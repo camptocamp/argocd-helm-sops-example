@@ -1,0 +1,20 @@
+---
+global:
+  image:
+    repository: "camptocamp/argocd"
+    tag: "v1.4.2_c2c.1"
+  securityContext:
+    fsGroup: 2000
+
+repoServer:
+  volumes:
+    - name: "gpg-private-key"
+      secret:
+        secretName: "argocd-secret"
+        items:
+          - key: "gpg.privkey.asc"
+            path: "privkey.asc"
+        defaultMode: 0600
+  volumeMounts:
+    - name: "gpg-private-key"
+      mountPath: "/app/config/gpg"

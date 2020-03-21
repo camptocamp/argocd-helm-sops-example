@@ -1,0 +1,7 @@
+---
+creation_rules:
+  - path_regex: "^(.*/)?secrets\\.yaml$"
+    pgp: "42759CB32867D63AF3B80E18E53CE5F1ECF9520D, C02115F775888814AC05E157A1FE74BED8AC83EB"
+  - path_regex: "^(.*/)?secrets-lab\\.yaml$"
+    pgp: "42759CB32867D63AF3B80E18E53CE5F1ECF9520D, C02115F775888814AC05E157A1FE74BED8AC83EB"
+  - path_regex: "^.*$"

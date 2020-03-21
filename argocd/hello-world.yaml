@@ -1,0 +1,28 @@
+---
+apiVersion: "v1"
+kind: "Namespace"
+metadata:
+  name: "hello-world"
+
+---
+apiVersion: "argoproj.io/v1alpha1"
+kind: "Application"
+metadata:
+  name: "hello-world"
+spec:
+  project: "default"
+  source:
+    repoURL: "https://github.com/camptocamp/argocd-helm-sops-example"
+    targetRevision: "HEAD"
+    path: "hello-world"
+    helm:
+      valueFiles:
+        - "values.yaml"
+        - "secrets.yaml"
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: "hello-world"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
