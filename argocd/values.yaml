@@ -2,7 +2,7 @@
 global:
   image:
     repository: "camptocamp/argocd"
-    tag: "v1.4.2_c2c.1"
+    tag: "v1.4.2_c2c.3"
   securityContext:
     fsGroup: 2000
 
