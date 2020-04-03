@@ -2,7 +2,7 @@
 
 ## Requirements
 
-To deploy this example application, you need a running Kubernets cluster. You can get one using [Minikube](https://minikube.sigs.k8s.io/docs/start/).
+To deploy this example application, you need a running Kubernetes cluster. You can get one using [Minikube](https://minikube.sigs.k8s.io/docs/start/).
 
 You also need to have GnuPG, [Sops](https://github.com/mozilla/sops), [Helm](https://helm.sh/docs/intro/install/) and [Helm Sops](https://github.com/camptocamp/helm-sops) installed on your workstation.
 
