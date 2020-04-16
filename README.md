@@ -43,7 +43,17 @@ kubectl --namespace=argocd wait deployment/argocd-server --for=condition=Availab
 kubectl --namespace=argocd port-forward service/argocd-server 8080:80 &
 ```
 
-Open a browser at the location http://localhost:8080/, ignore the invalid certificate warning (Argo CD comes with an self-signed certificate unless you customize it) and log in using `admin` as username and `password` as password (of course you would customize it in a real setup).
+Open a browser at the location http://localhost:8080/, ignore the invalid certificate warning (Argo CD comes with a self-signed certificate unless you customize it) and log in using `admin` as username and `password` as password (of course you would customize it in a real setup).
+
+## Installing Argo CD CLI
+
+In your browser, navigate to the help page (last icon on the left bar or http://localhost:8080/help), download the CLI and install it.
+
+Then log into Argo CD by running the following command in the terminal (use the same credentials used to log into the web interface):
+
+```sh
+argocd login localhost:8080
+```
 
 ## Deploying the application
 
@@ -53,12 +63,14 @@ Run the following commands in the terminal (choose which version of Helm you wan
 
 ```sh
 kubectl apply --namespace=argocd --filename=hello-world.yaml
+cd ../hello-world
 ```
 
 - else if you want to deploy the application using Helm 2:
 
 ```sh
 kubectl apply --namespace=argocd --filename=hello-world-legacy.yaml
+cd ../hello-world-legacy
 ```
 
 Then go to Argo CD web interface, click on the `sync` button of the hello-world application and wait for it to sync before executing the next commands in the terminal:
@@ -69,3 +81,46 @@ kubectl --namespace=hello-world port-forward service/hello-world 8081:80 &
 ```
 
 Open a browser at the location http://localhost:8081/ and note the decrypted secret ;-)
+
+## Modifying and redeploying the application
+
+Execute the following commands in the terminal to:
+
+- edit the secret:
+
+```sh
+sops secrets.yaml
+```
+
+- change the deployment replica count:
+
+```sh
+sed --regexp-extended --in-place 's/(replicaCount): 1/\1: 2/' values.yaml
+```
+
+- see what will be applied when redeploying the application:
+
+```sh
+argocd app diff hello-world --local .
+```
+
+- redeploy the modified application:
+
+```sh
+argocd app sync hello-world --local .
+```
+
+- verify that the modified application has been deployed (then reload the application in your browser):
+
+```sh
+kill %2
+kubectl --namespace=hello-world wait deployment/hello-world --for=condition=Available --timeout=300s
+kubectl --namespace=hello-world port-forward service/hello-world 8081:80 &
+```
+
+- commit the modifications:
+
+```sh
+git add secrets.yaml
+git diff --staged
+git commit -m "Update the secret"
