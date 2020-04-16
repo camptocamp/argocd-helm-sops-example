@@ -14,7 +14,7 @@ spec:
   source:
     repoURL: "https://github.com/camptocamp/argocd-helm-sops-example"
     targetRevision: "HEAD"
-    path: "hello-world"
+    path: "hello-world-legacy"
     helm:
       valueFiles:
         - "values.yaml"
